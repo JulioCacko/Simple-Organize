@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://unpkg.com https://cdn.tailwindcss.com; style-src 'self' 'unsafe-inline' https://unpkg.com https://static.figma.com; font-src 'self' https://static.figma.com; img-src 'self' data: https://www.paypalobjects.com; connect-src 'self' https://www.paypal.com https://www.linkedin.com;">
+  <style id="figma-style"></style>
+  <link href="/dist/tailwind.css" rel="stylesheet">
+  <script type="module" src="https://unpkg.com/@fluentui/web-components"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    :root {
+      --bg-main: #fffffe;
+      --text-primary: #242424;
+      --primary: #3DA9FC;
+      --secondary: #F0F0F0;
+      --tertiary: #e45858;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+      margin: 0;
+      padding: 20px;
+      background: var(--bg-main);
+      color: var(--text-primary);
+      line-height: 1.5;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    } 
+
+    .card {
+      background: var(--secondary);
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin: 1rem 0;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      text-align: left;
+    }
+
+    .checkbox-group {
+      background: var(--bg-main);
+      padding: 1rem;
+      border-radius: 8px;
+      margin: 0.5rem 0;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      isolation: isolate;
+      width: 325px;
+      height: auto;
+      align-self: stretch;
+    }
+
+
+    input[type="checkbox"] {
+      width: 18px;
+      height: 18px;
+    }
+    input[type="checkbox"]:hover {
+      cursor: pointer;
+    }
+    input[type="checkbox"]:active {
+      cursor: pointer;
+    }
+
+    input[type="number"] {
+      border: 2px solid var(--secondary);
+      padding: 6px 12px;
+      border-radius: 6px;
+      width: 70px;
+    }
+
+    .easter-egg {
+      cursor: pointer;
+      transition: opacity 0.2s;
+      color: var(--tertiary);
+      font-weight: 600;
+      text-align: center;
+      animation: pulse 2s infinite;
+      font-size: 0.875rem;
+      position: relative;
+    }
+
+    .easter-egg::after {
+      content: '🔍';
+      position: absolute;
+      right: -25px;
+      filter: grayscale(1);
+      opacity: 0.7;
+    }
+
+    .easter-egg:hover {
+      opacity: 0.8;
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1.05); }
+      50% { transform: scale(1); }
+    }
+
+    #game-container {
+      position: fixed;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(0, 0, 0, 0.8);
+      z-index: 1000;
+    }
+
+    #game-container.hidden {
+      display: none;
+    }
+
+    #game-canvas {
+      background: #70c5ce;
+      border-radius: 4px;
+    }
+
+    .primary-btn {
+      background: var(--primary);
+      color: var(--bg-main);
+      padding: 12px 24px;
+      border-radius: 8px;
+      border: none;
+      font-weight: 600;
+      transition: transform 0.2s ease;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      max-width: 520px;
+    }
+
+    .primary-btn:hover {
+      transform: translateY(-2px);
+      background: #0090FF;
+    }
+    .outline-btn {
+      background: transparent;
+      color: var(--primary);
+      border: 1px solid var(--primary);
+      padding: 12px 24px;
+      border-radius: 8px;
+      font-weight: 600;
+      display: flex;
+    justify-content: center;
+    align-items: center;
+    max-width: 520px;
+    }
+
+    .outline-btn:hover {
+      transform: translateY(-2px);
+      background: #f0f4f8;
+    }
+
+    .secondary-btn {
+      padding: 6px 12px;
+      font-size: 13px;
+      background-color: #f0f4f8;
+      color: #3DA9FC;
+      border: 1px solid #3DA9FC;
+      border-radius: 4px;
+    }
+    .secondary-btn:hover {
+      background-color: #3DA9FC;
+      color: #f0f4f8;
+    }
+
+    .donation-button:hover {
+      transform: translateY(1px);
+      box-shadow: 0 1px 0 rgba(0, 0, 0, 0.2);
+    } 
+    
+    .donation-button:active {
+      transform: translateY(1px);
+      box-shadow: 0 0px 0 rgba(0, 0, 0, 0.2);
+    }
+
+    .donation-button {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 4px 8px;
+      background-color: #3DA9FC;
+      border: 2px solid #153B58;
+      box-shadow: 0 2px 0 rgba(0, 0, 0, 0.2);
+      transition: all 0.2s ease;
+      text-decoration: none;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      font-size: 12px;
+      color: white;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      border-radius: 2px;
+    }
+
+    .donation-button:hover {
+      transform: translateY(1px);
+      box-shadow: 0 1px 0 rgba(0, 0, 0, 0.2);
+    }
+
+    .donation-button img {
+      width: 16px;
+      height: 16px;
+      object-fit: contain;
+    }
+
+    .loading-indicator {
+      display: none;
+      margin-top: 20px;
+      text-align: center;
+    }
+
+    .loading-indicator.active {
+      display: block;
+    }
+
+    .lang-pill {
+      flex-direction: column;
+      align-items: flex-start;
+      padding: 0px;
+      width: 51px;
+      height: 32px;
+      background: #F0F0F0;
+      border-radius: 99px;
+      flex: none;
+      order: 1;
+      flex-grow: 0;
+      color: #616161;
+    }
+
+    .lang-pill.active {
+      display: flex;
+      padding: 0px;
+      width: 52px;
+      height: 32px;
+      background: #3DA9FC;
+      border-radius: 99px;
+      flex: none;
+      order: 0;
+      flex-grow: 0;
+      justify-content: center;
+      align-items: center;
+      color: #FFFFFF;
+    }
+
+    main .donation-btn-container {
+      display: flex;
+      justify-content: center;
+      width: 100%;
+    }
+
+    main .donation-btn {
+      gap: 0.5rem;
+      padding: 0.5rem 1rem;
+    }
+
+    main .copyright {
+      text-align: center;
+      margin-top: 2rem;
+    }
+  </style>
+</head>
+<body class="flex flex-col items-center justify-center gap-4 p-4 relative bg-color-neutral-background-4-rest border border-solid border-color-neutral-stroke-transparent-rest">
+  <main class="flex flex-col max-w-[620px] items-center justify-center gap-4 relative w-full flex-[0_0_auto] bg-white rounded-lg shadow-elevation-light-shadow-04">
+    <div class="text-xl font-semibold text-[#3DA9FC]">
+      <svg width="188" height="34" viewBox="0 0 188 34" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M21.8251 28.5179C21.8251 30.0795 21.3433 31.3919 20.3798 32.4551C19.4494 33.4851 18.2201 34.0001 16.6917 34.0001H3.58414C1.52414 34.0001 0.494141 32.9203 0.494141 30.7606V26.3748C0.494141 24.2151 1.52414 23.1353 3.58414 23.1353H11.5583V23.0356H5.62752C4.16559 23.0356 2.93623 22.504 1.93946 21.4408C0.975914 20.3776 0.494141 19.0984 0.494141 17.6032V6.63871C0.494141 5.11033 0.959301 3.83113 1.88962 2.80113C2.85317 1.73791 4.09913 1.2063 5.62752 1.2063H18.7849C20.8117 1.2063 21.8251 2.26952 21.8251 4.39597V8.83161C21.8251 10.9913 20.8117 12.0711 18.7849 12.0711H10.7609V12.121H16.6917C18.1869 12.121 19.4162 12.6526 20.3798 13.7158C21.3433 14.779 21.8251 16.0748 21.8251 17.6032V28.5179ZM20.9778 28.5179V17.6032C20.9778 16.3406 20.5791 15.2608 19.7817 14.3637C18.9843 13.4666 17.9543 13.0181 16.6917 13.0181H9.91364V11.174H18.7849C20.2468 11.174 20.9778 10.3932 20.9778 8.83161V4.39597C20.9778 2.86759 20.2468 2.10339 18.7849 2.10339H5.62752C4.36494 2.10339 3.33494 2.55194 2.53752 3.44904C1.74011 4.31291 1.3414 5.37613 1.3414 6.63871V17.6032C1.3414 18.8326 1.74011 19.8958 2.53752 20.7929C3.36817 21.69 4.39817 22.1385 5.62752 22.1385H12.4056V23.9825H3.58414C2.08898 23.9825 1.3414 24.78 1.3414 26.3748V30.7606C1.3414 32.3222 2.08898 33.103 3.58414 33.103H16.6917C17.9543 33.103 18.9843 32.6545 19.7817 31.7574C20.5791 30.8603 20.9778 29.7804 20.9778 28.5179ZM20.1804 28.5179C20.1804 29.5479 19.8481 30.4283 19.1836 31.1593C18.5523 31.8571 17.7217 32.2059 16.6917 32.2059H3.58414C2.65381 32.2059 2.18865 31.7241 2.18865 30.7606V26.3748C2.18865 25.378 2.65381 24.8796 3.58414 24.8796H13.2528V21.2414H5.62752C4.63075 21.2414 3.8001 20.8926 3.13559 20.1948C2.5043 19.4638 2.18865 18.6 2.18865 17.6032V6.63871C2.18865 5.60871 2.5043 4.74484 3.13559 4.0471C3.76688 3.34936 4.59752 3.00049 5.62752 3.00049H18.7849C19.7152 3.00049 20.1804 3.46565 20.1804 4.39597V8.83161C20.1804 9.79515 19.7152 10.2769 18.7849 10.2769H9.06638V13.9151H16.6917C17.7217 13.9151 18.5523 14.2806 19.1836 15.0116C19.8481 15.7093 20.1804 16.5732 20.1804 17.6032V28.5179Z" fill="#3DA9FC"/>
+        <path d="M45.0063 26.7492C45.0063 27.3516 44.7961 27.8631 44.3757 28.2834C43.9554 28.7038 43.444 28.9139 42.8415 28.9139H34.6868C34.1123 28.9139 33.8251 28.6267 33.8251 28.0522V25.4671C33.8251 24.8926 34.1123 24.6054 34.6868 24.6054H40.6977V22.4616H35.9688C35.3804 22.4616 34.8759 22.2515 34.4556 21.8311C34.0352 21.4108 33.8251 20.9064 33.8251 20.3179V13.8656C33.8251 13.2631 34.0282 12.7587 34.4346 12.3523C34.8549 11.932 35.3663 11.7218 35.9688 11.7218H44.1446C44.719 11.7218 45.0063 12.002 45.0063 12.5625V15.1476C45.0063 15.7221 44.719 16.0093 44.1446 16.0093H38.1126V18.1531H42.8415C43.444 18.1531 43.9554 18.3633 44.3757 18.7836C44.7961 19.204 45.0063 19.7154 45.0063 20.3179V26.7492Z" fill="#3DA9FC"/>
+        <path d="M49.4824 15.0635C49.4824 15.638 49.1952 15.9253 48.6207 15.9253H46.8973C46.3228 15.9253 46.0356 15.638 46.0356 15.0635V13.7815C46.0356 13.207 46.3228 12.9198 46.8973 12.9198H48.6207C49.1952 12.9198 49.4824 13.207 49.4824 13.7815V15.0635ZM49.4824 27.9682C49.4824 28.5286 49.1952 28.8088 48.6207 28.8088H46.8973C46.3228 28.8088 46.0356 28.5286 46.0356 27.9682V17.6487C46.0356 17.0742 46.3228 16.787 46.8973 16.787H48.6207C49.1952 16.787 49.4824 17.0742 49.4824 17.6487V27.9682Z" fill="#3DA9FC"/>
+        <path d="M65.9908 27.9682C65.9908 28.5426 65.7036 28.8299 65.1291 28.8299H63.4267C62.8522 28.8299 62.565 28.5426 62.565 27.9682V20.2338H59.9799V27.1064C59.9799 27.5828 59.8117 27.9892 59.4755 28.3254C59.1392 28.6617 58.7329 28.8299 58.2565 28.8299C57.7801 28.8299 57.3737 28.6617 57.0375 28.3254C56.7012 27.9892 56.5331 27.5828 56.5331 27.1064V20.2338H53.9689V27.9682C53.9689 28.5426 53.6817 28.8299 53.1072 28.8299H51.3838C50.8093 28.8299 50.5221 28.5426 50.5221 27.9682V17.6487C50.5221 17.0742 50.8093 16.787 51.3838 16.787H56.5331C57.0094 16.787 57.4158 16.9551 57.7521 17.2914C58.0883 17.6277 58.2565 18.034 58.2565 18.5104C58.2565 18.034 58.4246 17.6277 58.7609 17.2914C59.0972 16.9551 59.5035 16.787 59.9799 16.787H64.2674C64.7438 16.787 65.1501 16.9551 65.4864 17.2914C65.8227 17.6277 65.9908 18.034 65.9908 18.5104V27.9682Z" fill="#3DA9FC"/>
+        <path d="M77.7805 27.1064C77.7805 27.5828 77.6124 27.9892 77.2761 28.3254C76.9398 28.6617 76.5335 28.8299 76.0571 28.8299H73.0516C72.5753 28.8299 72.1689 28.6617 71.8326 28.3254C71.4964 27.9892 71.3282 27.5828 71.3282 27.1064C71.3282 26.6301 71.4964 26.2237 71.8326 25.8874C72.1689 25.5512 72.5753 25.383 73.0516 25.383H74.3547V20.2338H70.4875V33.1384C70.4875 33.7129 70.2003 34.0001 69.6258 34.0001H67.9024C67.3279 34.0001 67.0407 33.7129 67.0407 33.1384V18.5104C67.0407 18.034 67.2088 17.6277 67.5451 17.2914C67.8814 16.9551 68.2877 16.787 68.7641 16.787H76.0571C76.5335 16.787 76.9398 16.9551 77.2761 17.2914C77.6124 17.6277 77.7805 18.034 77.7805 18.5104V27.1064Z" fill="#3DA9FC"/>
+        <path d="M82.2902 27.9682C82.2902 28.5286 82.0029 28.8088 81.4285 28.8088H79.705C79.1306 28.8088 78.8433 28.5286 78.8433 27.9682V12.4784C78.8433 11.904 79.1306 11.6167 79.705 11.6167H81.4285C82.0029 11.6167 82.2902 11.904 82.2902 12.4784V27.9682Z" fill="#3DA9FC"/>
+        <path d="M92.7876 27.9682C92.7876 28.5286 92.5004 28.8088 91.9259 28.8088H85.0533C84.5769 28.8088 84.1706 28.6477 83.8343 28.3254C83.498 27.9892 83.3299 27.5828 83.3299 27.1064V18.5104C83.3299 18.034 83.498 17.6277 83.8343 17.2914C84.1706 16.9551 84.5769 16.787 85.0533 16.787H91.0642C91.5406 16.787 91.947 16.9551 92.2832 17.2914C92.6195 17.6277 92.7876 18.034 92.7876 18.5104V22.7979C92.7876 23.2743 92.6195 23.6806 92.2832 24.0169C91.947 24.3532 91.5406 24.5213 91.0642 24.5213H86.7767V25.383H91.9259C92.5004 25.383 92.7876 25.6703 92.7876 26.2447V27.9682ZM89.3408 21.5159V20.2128H86.7767V21.5159H89.3408Z" fill="#3DA9FC"/>
+        <path d="M108.013 26.6441C108.013 27.2466 107.803 27.758 107.383 28.1783C106.977 28.5987 106.472 28.8088 105.87 28.8088H98.5557C97.9532 28.8088 97.4418 28.5987 97.0214 28.1783C96.6151 27.758 96.4119 27.2466 96.4119 26.6441V13.7605C96.4119 13.158 96.6151 12.6466 97.0214 12.2262C97.4418 11.8059 97.9532 11.5957 98.5557 11.5957H105.87C106.472 11.5957 106.977 11.8059 107.383 12.2262C107.803 12.6466 108.013 13.158 108.013 13.7605V26.6441ZM103.726 24.5003V15.9042H100.699V24.5003H103.726Z" fill="#3DA9FC"/>
+        <path d="M117.021 19.3721C117.021 19.9466 116.734 20.2338 116.16 20.2338H112.503V27.9682C112.503 28.5426 112.215 28.8299 111.641 28.8299H109.917C109.343 28.8299 109.056 28.5426 109.056 27.9682V18.5104C109.056 18.034 109.224 17.6277 109.56 17.2914C109.896 16.9551 110.303 16.787 110.779 16.787H116.16C116.734 16.787 117.021 17.0742 117.021 17.6487V19.3721Z" fill="#3DA9FC"/>
+        <path d="M128.616 32.2557C128.616 32.7321 128.448 33.1384 128.111 33.4747C127.775 33.811 127.369 33.9791 126.892 33.9791H119.158C118.583 33.9791 118.296 33.6919 118.296 33.1174V31.394C118.296 30.8195 118.583 30.5323 119.158 30.5323H125.19V20.2128H121.323V25.383H122.605C123.081 25.383 123.488 25.5512 123.824 25.8874C124.16 26.2237 124.328 26.6301 124.328 27.1064C124.328 27.5828 124.16 27.9892 123.824 28.3254C123.488 28.6477 123.081 28.8088 122.605 28.8088H119.599C119.123 28.8088 118.717 28.6477 118.38 28.3254C118.044 27.9892 117.876 27.5828 117.876 27.1064V18.5104C117.876 18.034 118.044 17.6277 118.38 17.2914C118.717 16.9551 119.123 16.787 119.599 16.787H126.892C127.369 16.787 127.775 16.9551 128.111 17.2914C128.448 17.6277 128.616 18.034 128.616 18.5104V32.2557Z" fill="#3DA9FC"/>
+        <path d="M139.998 27.9682C139.998 28.5286 139.711 28.8088 139.136 28.8088H137.413C136.838 28.8088 136.551 28.5286 136.551 27.9682V20.2128H133.125V25.383H133.966C134.442 25.383 134.849 25.5512 135.185 25.8874C135.521 26.2237 135.689 26.6301 135.689 27.1064C135.689 27.5828 135.521 27.9892 135.185 28.3254C134.849 28.6477 134.442 28.8088 133.966 28.8088H131.402C130.926 28.8088 130.519 28.6477 130.183 28.3254C129.847 27.9892 129.679 27.5828 129.679 27.1064V18.5104C129.679 18.034 129.847 17.6277 130.183 17.2914C130.519 16.9551 130.926 16.787 131.402 16.787H138.275C138.751 16.787 139.157 16.9551 139.494 17.2914C139.83 17.6277 139.998 18.034 139.998 18.5104V27.9682Z" fill="#3DA9FC"/>
+        <path d="M151.342 27.9682C151.342 28.5426 151.055 28.8299 150.48 28.8299H148.757C148.182 28.8299 147.895 28.5426 147.895 27.9682V20.2338H144.469V27.9682C144.469 28.5426 144.182 28.8299 143.607 28.8299H141.884C141.31 28.8299 141.022 28.5426 141.022 27.9682V17.6487C141.022 17.0742 141.31 16.787 141.884 16.787H149.618C150.095 16.787 150.501 16.9551 150.837 17.2914C151.174 17.6277 151.342 18.034 151.342 18.5104V27.9682Z" fill="#3DA9FC"/>
+        <path d="M155.813 15.0635C155.813 15.638 155.526 15.9253 154.951 15.9253H153.228C152.653 15.9253 152.366 15.638 152.366 15.0635V13.7815C152.366 13.207 152.653 12.9198 153.228 12.9198H154.951C155.526 12.9198 155.813 13.207 155.813 13.7815V15.0635ZM155.813 27.9682C155.813 28.5286 155.526 28.8088 154.951 28.8088H153.228C152.653 28.8088 152.366 28.5286 152.366 27.9682V17.6487C152.366 17.0742 152.653 16.787 153.228 16.787H154.951C155.526 16.787 155.813 17.0742 155.813 17.6487V27.9682Z" fill="#3DA9FC"/>
+        <path d="M168.034 28.0732C168.034 28.6477 167.747 28.9349 167.172 28.9349L157.378 28.8929C157.07 28.8929 156.916 28.7458 156.916 28.4516C156.916 28.1853 157.042 27.9121 157.294 27.6319L162.443 20.3389H157.714C157.14 20.3389 156.853 20.0516 156.853 19.4772V17.7538C156.853 17.1793 157.14 16.8921 157.714 16.8921H165.848V16.9131L167.571 16.8921C167.866 16.8921 168.013 17.0392 168.013 17.3334C168.013 17.5156 167.929 17.7397 167.761 18.006L162.99 25.4881H167.172C167.747 25.4881 168.034 25.7754 168.034 26.3498V28.0732Z" fill="#3DA9FC"/>
+        <path d="M178.521 27.9682C178.521 28.5286 178.234 28.8088 177.659 28.8088H170.787C170.31 28.8088 169.904 28.6477 169.568 28.3254C169.231 27.9892 169.063 27.5828 169.063 27.1064V18.5104C169.063 18.034 169.231 17.6277 169.568 17.2914C169.904 16.9551 170.31 16.787 170.787 16.787H176.798C177.274 16.787 177.68 16.9551 178.017 17.2914C178.353 17.6277 178.521 18.034 178.521 18.5104V22.7979C178.521 23.2743 178.353 23.6806 178.017 24.0169C177.68 24.3532 177.274 24.5213 176.798 24.5213H172.51V25.383H177.659C178.234 25.383 178.521 25.6703 178.521 26.2447V27.9682ZM175.074 21.5159V20.2128H172.51V21.5159H175.074Z" fill="#3DA9FC"/>
+        <path d="M187.506 19.3721C187.506 19.9466 187.219 20.2338 186.644 20.2338H182.987V27.9682C182.987 28.5426 182.7 28.8299 182.125 28.8299H180.402C179.827 28.8299 179.54 28.5426 179.54 27.9682V18.5104C179.54 18.034 179.708 17.6277 180.045 17.2914C180.381 16.9551 180.787 16.787 181.264 16.787H186.644C187.219 16.787 187.506 17.0742 187.506 17.6487V19.3721Z" fill="#3DA9FC"/>
+        </svg>        
+    </div>
+    <p class="text-gray-600">Quick setup for your Figma file structure</p>
+    <div class="flex gap-2 justify-end">
+      <button data-lang="en" class="lang-pill active">EN</button>
+      <button data-lang="pt" class="lang-pill">PT</button>
+      <button data-lang="es" class="lang-pill">ES</button>
+    </div>
+    
+    
+    
+    <div class="space-y-4">
+      <!-- Select All / Reset -->
+      <div class="flex justify-between items-center mb-4">
+        <button id="select-all" class="secondary-btn">Select All</button>
+        <button id="reset" class="secondary-btn">Reset</button>
+      </div>
+
+      <!-- Cover -->
+      <div class="checkbox-group">
+        <label class="flex items-center space-x-2">
+          <input type="checkbox" id="cover" class="form-checkbox" checked>
+          <span>🌄 Cover</span>
+        </label>
+      </div>
+
+      <!-- About -->
+      <div class="checkbox-group">
+        <label class="flex items-center space-x-2">
+          <input type="checkbox" id="about" class="form-checkbox" checked>
+          <span>📕 About</span>
+        </label>
+      </div>
+
+      <!-- Research -->
+      <div class="checkbox-group">
+        <label class="flex items-center space-x-2">
+          <input type="checkbox" id="research" class="form-checkbox" checked>
+          <span>🔍 Research</span>
+        </label>
+        <div class="ml-6 mt-2 space-y-2" id="research-options">
+          <label class="flex items-center space-x-2">
+            <input type="checkbox" id="bench" class="form-checkbox" checked>
+            <span>Bench</span>
+          </label>
+          <label class="flex items-center space-x-2">
+            <input type="checkbox" id="presentation" class="form-checkbox" checked>
+            <span>Presentation & Data</span>
+          </label>
+        </div>
+      </div>
+
+      <!-- Wireframe -->
+      <div class="checkbox-group">
+        <label class="flex items-center space-x-2">
+          <input type="checkbox" id="wireframe" class="form-checkbox" checked>
+          <span>📃 Wireframe</span>
+        </label>
+        <div class="ml-6 mt-2" id="wireframe-options">
+          <label class="flex items-center space-x-2">
+            <span>Versions:</span>
+            <input type="number" id="wireframe-count" class="w-16 px-2 py-1 border rounded" value="1" min="1">
+          </label>
+        </div>
+      </div>
+
+      <!-- Design -->
+      <div class="checkbox-group">
+        <label class="flex items-center space-x-2">
+          <input type="checkbox" id="design" class="form-checkbox" checked>
+          <span>🎨 Design</span>
+        </label>
+        <div class="ml-6 mt-2" id="design-options">
+          <label class="flex items-center space-x-2">
+            <span>Versions:</span>
+            <input type="number" id="design-count" class="w-16 px-2 py-1 border rounded" value="1" min="1">
+          </label>
+        </div>
+      </div>
+
+      <!-- Writing -->
+      <div class="checkbox-group">
+        <label class="flex items-center space-x-2">
+          <input type="checkbox" id="writing" class="form-checkbox" checked>
+          <span>✏️ Writing</span>
+        </label>
+      </div>
+
+      <!-- Accessibility -->
+      <div class="checkbox-group">
+        <label class="flex items-center space-x-2">
+          <input type="checkbox" id="accessibility" class="form-checkbox" checked>
+          <span>♿ Accessibility</span>
+        </label>
+      </div>
+
+      <!-- Components -->
+      <div class="checkbox-group">
+        <label class="flex items-center space-x-2">
+          <input type="checkbox" id="components" class="form-checkbox" checked>
+          <span>🧩 Components</span>
+        </label>
+        <div class="ml-6 mt-2 space-y-2" id="components-options">
+          <label class="flex items-center space-x-2">
+            <input type="checkbox" id="local-component" class="form-checkbox" checked>
+            <span>Local Components</span>
+          </label>
+          <label class="flex items-center space-x-2">
+            <input type="checkbox" id="system-component" class="form-checkbox" checked>
+            <span>System Components</span>
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <div class="justify-center items-center gap-8 inline-flex">
+      <button id="cancel" class="outline-btn">Cancel</button>
+      <button id="create-btn" class="primary-btn">Create Structure</button>
+    </div>
+    <footer class="w-96 h-16 pb-4 flex-col justify-center items-center gap-4 inline-flex">
+      <div className="flex items-center justify-center gap-[var(--global-size-120)] pt-[var(--global-size-160)] pb-[var(--global-size-160)] px-0 flex-1 grow flex-col relative">
+        <Divider
+          className="!flex-[0_0_auto] !w-[535px]"
+          contentAlign="center-default"
+          inset="block-default"
+          layout="default"
+          line="image.svg"
+          orientation="horizontal"
+          style="default"
+        />
+      </div>
+      <div class="justify-center items-center gap-8 inline-flex">
+        <a href="https://www.paypal.com/donate?hosted_button_id=FPHEKUPV8DCR6" target="_blank" rel="noopener noreferrer" class="donation-button">
+          <div class="justify-start items-center gap-1 flex">
+            <div class="text-center text-white text-xs font-normal font-['Bonk'] uppercase [text-shadow:_0px_1px_0px_rgb(0_0_0_/_0.40)]">SUpport THIS PROJECT</div>
+          </div>
+        </a>
+        <div class="justify-start items-center gap-2 flex">
+          <div class="text-black text-xs font-normal font-['Segoe UI'] leading-none">Created by</div>
+          <div class="justify-start items-start gap-1 flex">
+            <div class="h-5 flex-col justify-start items-start inline-flex">
+              <a href="https://www.linkedin.com/in/juliocacko/" target="_blank" rel="noopener noreferrer" class="text-[#3da9fc] text-sm font-semibold font-['Segoe UI'] underline leading-tight">@juliocacko</a>
+              <div class="self-stretch h-0.5 border-t border-[#3da9fc]"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </footer>
+    <script src="/js/magenta.js"></script>
+
+    <script>
+      // Wait for DOM to be fully loaded
+      document.addEventListener('DOMContentLoaded', () => {
+        // Initialize UI elements
+        const elements = {
+          createBtn: document.getElementById('create-btn'),
+          cancelBtn: document.getElementById('cancel'),
+          loadingIndicator: document.getElementById('loading-indicator'),
+          selectAllBtn: document.getElementById('select-all'),
+          resetBtn: document.getElementById('reset'),
+          wireframeCount: document.getElementById('wireframe-count'),
+          designCount: document.getElementById('design-count'),
+          subtitleText: document.querySelector('p'),
+          languagePills: document.querySelectorAll('.lang-pill')
+        };
+
+        const checkboxGroups = {
+          research: {
+            main: document.getElementById('research'),
+            options: document.getElementById('research-options')
+          },
+          wireframe: {
+            main: document.getElementById('wireframe'),
+            options: document.getElementById('wireframe-options')
+          },
+          design: {
+            main: document.getElementById('design'),
+            options: document.getElementById('design-options')
+          },
+          components: {
+            main: document.getElementById('components'),
+            options: document.getElementById('components-options')
+          }
+        };
+
+        // Language translations
+        const translations = {
+          en: {
+            subtitle: 'Quick setup for your Figma file structure',
+            createBtn: 'Create Structure',
+            selectAll: 'Select All',
+            reset: 'Reset',
+            creating: 'Creating structure...',
+            success: 'Structure created successfully!'
+          },
+          pt: {
+            subtitle: 'Configuração rápida para estrutura de arquivos Figma',
+            createBtn: 'Criar Estrutura',
+            selectAll: 'Selecionar Tudo',
+            reset: 'Reiniciar',
+            creating: 'Criando estrutura...',
+            success: 'Estrutura criada com sucesso!'
+          },
+          es: {
+            subtitle: 'Configuración rápida para estructura de archivos Figma',
+            createBtn: 'Crear Estructura',
+            selectAll: 'Seleccionar Todo',
+            reset: 'Reiniciar',
+            creating: 'Creando estructura...',
+            success: '¡Estructura creada con éxito!'
+          }
+        };
+
+        // Functions
+        function updateLanguage(lang) {
+          const t = translations[lang];
+          if (elements.subtitleText) elements.subtitleText.textContent = t.subtitle;
+          if (elements.createBtn) elements.createBtn.textContent = t.createBtn;
+          if (elements.selectAllBtn) elements.selectAllBtn.textContent = t.selectAll;
+          if (elements.resetBtn) elements.resetBtn.textContent = t.reset;
+          if (elements.loadingIndicator) {
+            const span = elements.loadingIndicator.querySelector('span');
+            if (span) span.textContent = t.creating;
+          }
+        }
+
+        function toggleOptions(checkbox, options) {
+          if (checkbox && options) {
+            options.style.display = checkbox.checked ? 'block' : 'none';
+          }
+        }
+
+        function initializeCheckboxGroups() {
+          Object.values(checkboxGroups).forEach(group => {
+            if (group.main && group.options) {
+              // Set initial state
+              toggleOptions(group.main, group.options);
+              // Add change listener
+              group.main.addEventListener('change', () => toggleOptions(group.main, group.options));
+            }
+          });
+        }
+
+        function getStructureData() {
+          return {
+            cover: document.getElementById('cover')?.checked || false,
+            about: document.getElementById('about')?.checked || false,
+            research: {
+              enabled: document.getElementById('research')?.checked || false,
+              bench: document.getElementById('bench')?.checked || false,
+              presentation: document.getElementById('presentation')?.checked || false
+            },
+            wireframe: {
+              enabled: document.getElementById('wireframe')?.checked || false,
+              count: parseInt(elements.wireframeCount?.value) || 1
+            },
+            design: {
+              enabled: document.getElementById('design')?.checked || false,
+              count: parseInt(elements.designCount?.value) || 1
+            },
+            writing: document.getElementById('writing')?.checked || false,
+            accessibility: document.getElementById('accessibility')?.checked || false,
+            components: {
+              enabled: document.getElementById('components')?.checked || false,
+              local: document.getElementById('local-component')?.checked || false,
+              system: document.getElementById('system-component')?.checked || false
+            }
+          };
+        }
+
+        // Event Listeners
+        elements.languagePills.forEach(btn => {
+          btn.addEventListener('click', () => {
+            elements.languagePills.forEach(p => p.classList.remove('active'));
+            btn.classList.add('active');
+            updateLanguage(btn.dataset.lang);
+          });
+        });
+
+        if (elements.createBtn) {
+          elements.createBtn.addEventListener('click', () => {
+            if (elements.loadingIndicator) {
+              elements.loadingIndicator.classList.add('active');
+            }
+            const structure = getStructureData();
+            parent.postMessage({ 
+              pluginMessage: { 
+                type: 'create-structure', 
+                structure 
+              }
+            }, '*');
+          });
+        }
+
+        if (elements.cancelBtn) {
+          elements.cancelBtn.addEventListener('click', () => {
+            parent.postMessage({ 
+              pluginMessage: { 
+                type: 'cancel' 
+              }
+            }, '*');
+          });
+        }
+
+        if (elements.selectAllBtn) {
+          elements.selectAllBtn.addEventListener('click', () => {
+            document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+              checkbox.checked = true;
+              const groupId = checkbox.id;
+              if (checkboxGroups[groupId]) {
+                toggleOptions(checkboxGroups[groupId].main, checkboxGroups[groupId].options);
+              }
+            });
+          });
+        }
+
+        if (elements.resetBtn) {
+          elements.resetBtn.addEventListener('click', () => {
+            document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+              checkbox.checked = false;
+              const groupId = checkbox.id;
+              if (checkboxGroups[groupId]) {
+                toggleOptions(checkboxGroups[groupId].main, checkboxGroups[groupId].options);
+              }
+            });
+            if (elements.wireframeCount) elements.wireframeCount.value = '1';
+            if (elements.designCount) elements.designCount.value = '1';
+          });
+        }
+
+        // Initialize
+        initializeCheckboxGroups();
+        updateLanguage('en');
+
+        // Listen for messages from the plugin
+        window.onmessage = (event) => {
+          if (event.data.pluginMessage) {
+            const { type } = event.data.pluginMessage;
+            if (type === 'creation-complete' && elements.loadingIndicator) {
+              elements.loadingIndicator.classList.remove('active');
+            }
+          }
+        };
+
+        // Notify plugin that UI is ready
+        parent.postMessage({
+          pluginMessage: {
+            type: 'ui-ready'
+          }
+        }, '*');
+      });
+
+      // Tailwind configuration
+      tailwind.config = {
+        corePlugins: {
+          preflight: false,
+        },
+        content: ['./ui.html'],
+        theme: {
+          extend: {
+            colors: {
+              primary: '#3DA9FC',
+              secondary: '#90B4CE'
+            }
+          }
+        }
+      }
+    </script>
+  </body>
+</html>

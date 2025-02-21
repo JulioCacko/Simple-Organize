@@ -1,0 +1,21 @@
+{
+  "name": "Simple Organizer",
+  "id": "1474456277383519616",
+  "api": "1.0.0",
+  "main": "code.js",
+  "ui": "ui.html",
+  "networkAccess": {
+    "allowedDomains": [
+      "https://www.paypal.com",
+      "https://paypalobjects.com",
+      "https://www.paypalobjects.com",
+      "https://unpkg.com",
+      "https://cdn.tailwindcss.com",
+      "https://www.linkedin.com"
+    ]
+  },
+  "capabilities": [],
+  "enableProposedApi": false,
+  "editorType": ["figma"],
+  "documentAccess": "dynamic-page"
+}
